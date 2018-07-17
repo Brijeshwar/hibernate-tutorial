@@ -53,6 +53,7 @@ public class DeleteStudentDemo {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
+			session.close();
 			factory.close();
 		}
 	}

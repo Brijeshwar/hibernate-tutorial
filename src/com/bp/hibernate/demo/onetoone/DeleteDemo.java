@@ -22,20 +22,24 @@ public class DeleteDemo {
 		Session session = factory.getCurrentSession();
 		
 		try {
-			//create the object
-			Instructor tempInstructor = new Instructor("Madhu", "Patel", "madhu@luv2code.com");
-			
-			InstructorDetail tempInstructorDetail = new InstructorDetail("http://www.youtube.com", "Guitar");
-			
-			//associate the objects
-			tempInstructor.setInstructorDetail(tempInstructorDetail);
-			
 			//begin the transaction
 			session.beginTransaction();
+
+			//get instructor by primary key id
+			int theId =3;
+			Instructor tempInstructor = session.get(Instructor.class, theId);
 			
-			//save the instructor
-			session.save(tempInstructor);
+			System.out.println("Found instructor: " + tempInstructor);
 			
+			//delete the instructor
+			if (tempInstructor != null) {
+				System.out.println("Deleting: " + tempInstructor);
+				
+				//Note: will also delete the associated "details" objects
+				//because of CasecadeType.ALL
+				session.delete(tempInstructor);
+			}
+
 			//commit the transaction
 			session.getTransaction().commit();
 			
@@ -44,6 +48,7 @@ public class DeleteDemo {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
+			session.close();
 			factory.close();
 		}
 	}

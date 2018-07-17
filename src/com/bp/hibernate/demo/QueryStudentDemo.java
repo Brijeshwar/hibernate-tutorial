@@ -64,6 +64,7 @@ public class QueryStudentDemo {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
+			session.close();
 			factory.close();
 		}
 	}

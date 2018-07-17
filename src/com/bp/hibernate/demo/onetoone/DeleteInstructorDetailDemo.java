@@ -7,7 +7,7 @@ import org.hibernate.cfg.Configuration;
 import com.bp.hibernate.demo.entity.onetoone.Instructor;
 import com.bp.hibernate.demo.entity.onetoone.InstructorDetail;
 
-public class CreateDemo {
+public class DeleteInstructorDetailDemo {
 
 	public static void main(String[] args) {
 		
@@ -22,20 +22,26 @@ public class CreateDemo {
 		Session session = factory.getCurrentSession();
 		
 		try {
-			//create the object
-			Instructor tempInstructor = new Instructor("Madhu", "Patel", "madhu@luv2code.com");
-			
-			InstructorDetail tempInstructorDetail = new InstructorDetail("http://www.youtube.com", "Guitar");
-			
-			//associate the objects
-			tempInstructor.setInstructorDetail(tempInstructorDetail);
-			
 			//begin the transaction
 			session.beginTransaction();
+
+			//get instructor by primary key id
+			int theId = 5;
+			InstructorDetail tempInstructorDetail = session.get(InstructorDetail.class, theId);
 			
-			//save the instructor
-			session.save(tempInstructor);
+			System.out.println("Found InstructorDetail: " + tempInstructorDetail);
 			
+			//print the associated Instructor
+			System.out.println("The associated instructor is: " + tempInstructorDetail.getInstructor());
+			
+			//delete the instrucotr detail
+			System.out.println("\nDeleting tempInstructorDetail: " + tempInstructorDetail);
+			
+			//remove the associated object reference and break bi directional link
+			tempInstructorDetail.getInstructor().setInstructorDetail(null);
+			
+			session.delete(tempInstructorDetail);
+
 			//commit the transaction
 			session.getTransaction().commit();
 			

@@ -46,6 +46,7 @@ public class CreateStudentDemo {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
+			session.close();
 			factory.close();
 		}
 	}
